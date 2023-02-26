@@ -1,0 +1,16 @@
+extends ./layout
+
+block styles 
+  link(href=require('../styles/p-j-query.scss') rel='stylesheet')
+
+
+block content
+  .j-query
+    .container 
+      .j-query__wrap 
+        h1.hi Hello
+
+
+block append scripts
+  script(src=require('../js/jquery-3.6.3.js'))
+  script(src=require('../js/j-query.js'))
