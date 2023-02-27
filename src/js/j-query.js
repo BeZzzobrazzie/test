@@ -1,6 +1,7 @@
-let $ = require('./jquery-3.6.3');
+import IMask from 'imask';
 
-$(document).ready(function(){
-  $("h1").css("color", "#0088ff");
+let element = document.querySelector('.date');
+let dateMask = IMask(element, {
+  mask: Date,
 });
 
