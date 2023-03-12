@@ -1,0 +1,18 @@
+.circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2em;
+  height: 2em;
+  
+  border: 0.1em solid #1F204140;
+  border-radius: 50%;
+  
+  &__in {
+    width: 1em;
+    height: 1em;
+    
+    border: 0.1em solid #1F204140;
+    border-radius: 50%;
+  }
+}
