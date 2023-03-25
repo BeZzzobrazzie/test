@@ -1,0 +1,21 @@
+extends ./layout
+
+block styles 
+  link(href=require('../styles/p-canvas-page.scss') rel='stylesheet')
+
+
+block content
+  .canvas-page
+    .container 
+      .canvas-page__wrap
+        .canvas-page__content
+          h1 Hello
+          canvas.my-canvas(width="350" height="200") hi
+
+
+
+
+
+block append scripts
+  script(src=require('../blocks/my-canvas/my-canvas.js'))
+  

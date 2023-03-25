@@ -6,6 +6,7 @@ module.exports = {
   entry: {
     index: './src/views/index.pug',      // output index.html
     "j-query": "./src/views/j-query.pug",
+    "canvas-page": "./src/views/canvas-page.pug",
   },
   stats: {
     errorDetails: true,
