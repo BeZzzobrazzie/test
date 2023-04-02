@@ -8,7 +8,6 @@ class Main {
     
     this.ctx = this.canvas.getContext('2d');
     this.step = 20;
-    this.currentPos = {x: 21, y: 21};
 
     this.objects = {creatures: {},
                     apples: {},
@@ -27,12 +26,26 @@ class Main {
   }
 
   createField() {
-    for (let i = 1, a = 1; i <= this.cWidth; i = i + this.step, a++) {
-      this.cells[a] = {x: i + 1};
-      console.log(i);
+    for (let y = 1, a = 1; y <= this.cHeight; y = y + this.step, a++) {
+      for (let x = 1, b = 1; x <= this.cWidth; x = x + this.step, b++) {
+        //console.log('a: ' + a + ' b: ' + b + ' cell: ' + ((a - 1) * (this.cWidth / this.step) + b));
+        let addressCell = (a - 1) * (this.cWidth / this.step) + b;
+        this.cells[addressCell] = {x: x, y: y, size: 18};
+      }
     }
-    console.log(this.cells);
 
+
+    for (let y = 1, a = 1; y <= this.cHeight; y = y + this.step, a++) {
+      for (let x = 1, b = 1; x <= this.cWidth; x = x + this.step, b++) {
+        let addressCell = (a - 1) * (this.cWidth / this.step) + b;
+        this.cells[addressCell].up = this.cells[addressCell - this.cWidth / this.step];
+        this.cells[addressCell].right = this.cells[addressCell + 1];
+        this.cells[addressCell].bottom = this.cells[addressCell + this.cWidth / this.step];
+        this.cells[addressCell].left = this.cells[addressCell - 1];
+      }
+    }
+
+    console.log(this.cells);
   }
 
   drawField() {
@@ -57,10 +70,10 @@ class Main {
     let thisObj = this;
     let timerId = setTimeout(function tick() {
       for (let key in thisObj.objects.creatures) {
-        thisObj.objects.creatures[key].instance.go();
+        thisObj.objects.creatures[key].go();
       }
-      timerId = setTimeout(tick, 1000);
-    }, 1000, thisObj);
+      timerId = setTimeout(tick, 2000);
+    }, 2000, thisObj);
   }
 
 
@@ -70,20 +83,35 @@ class Main {
 class Entity {
   constructor(x, y, step, cWidth, cHeight, ctx, main) {
     this.step = step;
-    this.currentPos = {x: this.step * x + 1, y: this.step * y + 1};
+    this.currentCell;
     this.cWidth = cWidth;
     this.cHeight = cHeight;
     this.ctx = ctx;
     this.main = main;
     this.name;
+    this.type;
   }
 
   create(ctx, color, type) {
-    ctx.fillStyle = color;
-    ctx.fillRect(this.currentPos.x, this.currentPos.y, 18, 18);
+    let randomCell;
+
+    while (true) {
+      randomCell = getRandomInt(0, this.cWidth / this.step * this.cHeight / this.step);
+      if (this.main.cells[randomCell].obj == undefined) {
+        break;
+      }
+    }
+
+    this.currentCell = this.main.cells[randomCell];
+    this.currentCell.obj = this;
 
     this.name = getId(this.main.objects[type]);
-    this.main.objects[type][this.name] = {instance: this, x: this.currentPos.x, y: this.currentPos.y};
+    this.main.objects[type][this.name] = this;
+
+    
+    ctx.fillStyle = color;
+    ctx.fillRect(this.currentCell.x, this.currentCell.y, this.currentCell.size, this.currentCell.size);
+
   }
 
   die(ctx) {
@@ -99,7 +127,8 @@ class Entity {
 class Apple extends Entity {
   constructor(x, y, step, cWidth, cHeight, ctx, main) {
     super(x, y, step, cWidth, cHeight, ctx, main);
-    this.create(ctx, 'orange', 'apples');
+    this.type = 'apples';
+    this.create(ctx, 'orange', this.type);
   }
 
 }
@@ -107,46 +136,84 @@ class Apple extends Entity {
 class Creature extends Entity {
   constructor(x, y, step, cWidth, cHeight, ctx, main) {
     super(x, y, step, cWidth, cHeight, ctx, main);
-    this.create(ctx, 'blue', 'creatures');
+    this.type = 'creatures';
+    this.create(ctx, 'blue', this.type);
   }
 
+  exist() {
+    let direction = getRandomInt(1, 5);
+
+
+
+  }
+
+  eat(direction) {
+    if (direction == 1 && this.currentCell.up.obj.type == 'apples') {
+
+    }
+    if (direction == 2 && this.currentCell.right.obj.type == 'apples') {
+
+    }
+    if (direction == 3 && this.currentCell.bottom.obj.type == 'apples') {
+
+    }
+    if (direction == 4 && this.currentCell.left.obj.type == 'apples') {
+
+    }
+  }
 
   go() {
     let direction = getRandomInt(1, 5);
-    console.log(direction);
+    //console.log(direction);
 
 
-    if (direction == 1 && this.currentPos.x <= this.cWidth - this.step) {
+    if (direction == 1 && this.currentCell.y >= this.step && this.currentCell.up.obj == undefined) { // up
       this.ctx.fillStyle = 'white';
-      this.ctx.fillRect(this.currentPos.x, this.currentPos.y, 18, 18);
+      this.ctx.fillRect(this.currentCell.x, this.currentCell.y, this.currentCell.size, this.currentCell.size);
+      this.currentCell.obj = undefined;
 
       this.ctx.fillStyle = 'blue';
-      this.ctx.fillRect(this.currentPos.x + this.step, this.currentPos.y, 18, 18);
-      this.currentPos.x += this.step;
+      this.ctx.fillRect(this.currentCell.x, this.currentCell.y - this.step, this.currentCell.size, this.currentCell.size);
+      this.currentCell = this.currentCell.up;
+      this.currentCell.obj = this;
+
+      //console.log('up');
     }
-    if (direction == 2 && this.currentPos.x >= this.step) {
+    if (direction == 2 && this.currentCell.x <= this.cWidth - this.step && this.currentCell.right.obj == undefined) { // right
       this.ctx.fillStyle = 'white';
-      this.ctx.fillRect(this.currentPos.x, this.currentPos.y, 18, 18);
+      this.ctx.fillRect(this.currentCell.x, this.currentCell.y, this.currentCell.size, this.currentCell.size);
+      this.currentCell.obj = undefined;
 
       this.ctx.fillStyle = 'blue';
-      this.ctx.fillRect(this.currentPos.x - this.step, this.currentPos.y, 18, 18);
-      this.currentPos.x -= this.step;
+      this.ctx.fillRect(this.currentCell.x + this.step, this.currentCell.y, this.currentCell.size, this.currentCell.size);
+      this.currentCell = this.currentCell.right;
+      this.currentCell.obj = this;
+
+      //console.log('right');
     }
-    if (direction == 3 && this.currentPos.y >= this.step) {
+    if (direction == 3 && this.currentCell.y <= this.cHeight - this.step && this.currentCell.bottom.obj == undefined) { //bottom
       this.ctx.fillStyle = 'white';
-      this.ctx.fillRect(this.currentPos.x, this.currentPos.y, 18, 18);
+      this.ctx.fillRect(this.currentCell.x, this.currentCell.y, this.currentCell.size, this.currentCell.size);
+      this.currentCell.obj = undefined;
 
       this.ctx.fillStyle = 'blue';
-      this.ctx.fillRect(this.currentPos.x, this.currentPos.y - this.step, 18, 18);
-      this.currentPos.y -= this.step;
+      this.ctx.fillRect(this.currentCell.x, this.currentCell.y + this.step, this.currentCell.size, this.currentCell.size);
+      this.currentCell = this.currentCell.bottom;
+      this.currentCell.obj = this;
+
+      //console.log('bottom');
     }
-    if (direction == 4 && this.currentPos.y <= this.cHeight - this.step) {
+    if (direction == 4 && this.currentCell.x >= this.step && this.currentCell.left.obj == undefined) { // left
       this.ctx.fillStyle = 'white';
-      this.ctx.fillRect(this.currentPos.x, this.currentPos.y, 18, 18);
+      this.ctx.fillRect(this.currentCell.x, this.currentCell.y, this.currentCell.size, this.currentCell.size);
+      this.currentCell.obj = undefined;
 
       this.ctx.fillStyle = 'blue';
-      this.ctx.fillRect(this.currentPos.x, this.currentPos.y + this.step, 18, 18);
-      this.currentPos.y += this.step;
+      this.ctx.fillRect(this.currentCell.x - this.step, this.currentCell.y, this.currentCell.size, this.currentCell.size);
+      this.currentCell = this.currentCell.left;
+      this.currentCell.obj = this;
+
+      //console.log('left');
     }
   }
 }
