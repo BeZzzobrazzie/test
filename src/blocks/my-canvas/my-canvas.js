@@ -147,6 +147,10 @@ class Creature extends Entity {
 
   }
 
+  sense() {
+    
+  }
+
   eat(direction) {
     if (direction == 1 && this.currentCell.up.obj.type == 'apples') {
 
