@@ -17,7 +17,7 @@ class Main {
     this.createField();
     this.drawField();
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 100; i++) {
       new Creature(getRandomInt(0, this.cWidth / this.step), getRandomInt(0, this.cHeight / this.step), this.step, this.cWidth, this.cHeight, this.ctx, this);
       new Apple(getRandomInt(0, this.cWidth / this.step), getRandomInt(0, this.cHeight / this.step), this.step, this.cWidth, this.cHeight, this.ctx, this);
     };
@@ -30,7 +30,7 @@ class Main {
       for (let x = 1, b = 1; x <= this.cWidth; x = x + this.step, b++) {
         //console.log('a: ' + a + ' b: ' + b + ' cell: ' + ((a - 1) * (this.cWidth / this.step) + b));
         let addressCell = (a - 1) * (this.cWidth / this.step) + b;
-        this.cells[addressCell] = {x: x, y: y, size: 18};
+        this.cells[addressCell] = {x: x, y: y, size: 18, obj: null};
       }
     }
 
@@ -38,10 +38,37 @@ class Main {
     for (let y = 1, a = 1; y <= this.cHeight; y = y + this.step, a++) {
       for (let x = 1, b = 1; x <= this.cWidth; x = x + this.step, b++) {
         let addressCell = (a - 1) * (this.cWidth / this.step) + b;
-        this.cells[addressCell].up = this.cells[addressCell - this.cWidth / this.step];
-        this.cells[addressCell].right = this.cells[addressCell + 1];
-        this.cells[addressCell].bottom = this.cells[addressCell + this.cWidth / this.step];
-        this.cells[addressCell].left = this.cells[addressCell - 1];
+
+        if (addressCell - this.cWidth / this.step <= 0) {
+          this.cells[addressCell].up = null;
+        }
+        else {
+          this.cells[addressCell].up = this.cells[addressCell - this.cWidth / this.step];
+        }
+
+        if (addressCell + 1 > this.cWidth / this.step * a) {
+          this.cells[addressCell].right = null;
+        }
+        else {
+          this.cells[addressCell].right = this.cells[addressCell + 1];
+        }
+
+        if (addressCell + this.cWidth / this.step > this.cWidth / this.step * this.cHeight / this.step) {
+          this.cells[addressCell].bottom = null;
+        }
+        else {
+          this.cells[addressCell].bottom = this.cells[addressCell + this.cWidth / this.step];
+        }
+
+        if (addressCell - 1 <= this.cWidth / this.step * a - this.cWidth / this.step) {
+          this.cells[addressCell].left = null;
+        }
+        else {
+          this.cells[addressCell].left = this.cells[addressCell - 1];
+        }
+
+
+        //console.log('addressCell: ' + addressCell + ' a: ' + a + ' b: ' + b);
       }
     }
 
@@ -71,6 +98,7 @@ class Main {
     let timerId = setTimeout(function tick() {
       for (let key in thisObj.objects.creatures) {
         thisObj.objects.creatures[key].go();
+        thisObj.objects.creatures[key].sense();
       }
       timerId = setTimeout(tick, 2000);
     }, 2000, thisObj);
@@ -97,7 +125,7 @@ class Entity {
 
     while (true) {
       randomCell = getRandomInt(0, this.cWidth / this.step * this.cHeight / this.step);
-      if (this.main.cells[randomCell].obj == undefined) {
+      if (this.main.cells[randomCell].obj == null) {
         break;
       }
     }
@@ -142,13 +170,37 @@ class Creature extends Entity {
 
   exist() {
     let direction = getRandomInt(1, 5);
-
+    this.sense();
 
 
   }
 
   sense() {
+    function senseDir(direction, parrent) {
+      if (parrent.currentCell[direction] !== null && parrent.currentCell[direction].obj !== null) {
+        return parrent.currentCell[direction].obj.type;
+      }
+      else {
+        return null;
+      }
+    }
+    let up;
+    let right;
+    let bottom;
+    let left;
     
+    up = senseDir('up', this);
+    right = senseDir('right', this);
+    bottom = senseDir('bottom', this);
+    left = senseDir('left', this);
+
+
+    console.log({up: up, right: right, bottom: bottom, left: left});
+    return {up: up, right: right, bottom: bottom, left: left};
+  }
+
+  decide() {
+
   }
 
   eat(direction) {
@@ -166,15 +218,19 @@ class Creature extends Entity {
     }
   }
 
+  sleep() {
+
+  }
+
   go() {
     let direction = getRandomInt(1, 5);
     //console.log(direction);
 
 
-    if (direction == 1 && this.currentCell.y >= this.step && this.currentCell.up.obj == undefined) { // up
+    if (direction == 1 && this.currentCell.y >= this.step && this.currentCell.up.obj == null) { // up
       this.ctx.fillStyle = 'white';
       this.ctx.fillRect(this.currentCell.x, this.currentCell.y, this.currentCell.size, this.currentCell.size);
-      this.currentCell.obj = undefined;
+      this.currentCell.obj = null;
 
       this.ctx.fillStyle = 'blue';
       this.ctx.fillRect(this.currentCell.x, this.currentCell.y - this.step, this.currentCell.size, this.currentCell.size);
@@ -183,10 +239,10 @@ class Creature extends Entity {
 
       //console.log('up');
     }
-    if (direction == 2 && this.currentCell.x <= this.cWidth - this.step && this.currentCell.right.obj == undefined) { // right
+    if (direction == 2 && this.currentCell.x <= this.cWidth - this.step && this.currentCell.right.obj == null) { // right
       this.ctx.fillStyle = 'white';
       this.ctx.fillRect(this.currentCell.x, this.currentCell.y, this.currentCell.size, this.currentCell.size);
-      this.currentCell.obj = undefined;
+      this.currentCell.obj = null;
 
       this.ctx.fillStyle = 'blue';
       this.ctx.fillRect(this.currentCell.x + this.step, this.currentCell.y, this.currentCell.size, this.currentCell.size);
@@ -195,10 +251,10 @@ class Creature extends Entity {
 
       //console.log('right');
     }
-    if (direction == 3 && this.currentCell.y <= this.cHeight - this.step && this.currentCell.bottom.obj == undefined) { //bottom
+    if (direction == 3 && this.currentCell.y <= this.cHeight - this.step && this.currentCell.bottom.obj == null) { //bottom
       this.ctx.fillStyle = 'white';
       this.ctx.fillRect(this.currentCell.x, this.currentCell.y, this.currentCell.size, this.currentCell.size);
-      this.currentCell.obj = undefined;
+      this.currentCell.obj = null;
 
       this.ctx.fillStyle = 'blue';
       this.ctx.fillRect(this.currentCell.x, this.currentCell.y + this.step, this.currentCell.size, this.currentCell.size);
@@ -207,10 +263,10 @@ class Creature extends Entity {
 
       //console.log('bottom');
     }
-    if (direction == 4 && this.currentCell.x >= this.step && this.currentCell.left.obj == undefined) { // left
+    if (direction == 4 && this.currentCell.x >= this.step && this.currentCell.left.obj == null) { // left
       this.ctx.fillStyle = 'white';
       this.ctx.fillRect(this.currentCell.x, this.currentCell.y, this.currentCell.size, this.currentCell.size);
-      this.currentCell.obj = undefined;
+      this.currentCell.obj = null;
 
       this.ctx.fillStyle = 'blue';
       this.ctx.fillRect(this.currentCell.x - this.step, this.currentCell.y, this.currentCell.size, this.currentCell.size);
