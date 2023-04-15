@@ -17,8 +17,10 @@ class Main {
     this.createField();
     this.drawField();
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 2; i++) {
       new Creature(getRandomInt(0, this.cWidth / this.step), getRandomInt(0, this.cHeight / this.step), this.step, this.cWidth, this.cHeight, this.ctx, this);
+    };
+    for (let i = 0; i < 1; i++) {
       new Apple(getRandomInt(0, this.cWidth / this.step), getRandomInt(0, this.cHeight / this.step), this.step, this.cWidth, this.cHeight, this.ctx, this);
     };
 
@@ -96,9 +98,14 @@ class Main {
   timer() {
     let thisObj = this;
     let timerId = setTimeout(function tick() {
+      console.log(thisObj.objects);
+      console.log(thisObj.cells);
       for (let key in thisObj.objects.creatures) {
-        thisObj.objects.creatures[key].go();
-        thisObj.objects.creatures[key].sense();
+
+        //thisObj.objects.creatures[key].go();
+        //thisObj.objects.creatures[key].sense();
+        thisObj.objects.creatures[key].decide();
+
       }
       timerId = setTimeout(tick, 2000);
     }, 2000, thisObj);
@@ -170,8 +177,8 @@ class Creature extends Entity {
 
   exist() {
     let direction = getRandomInt(1, 5);
-    this.sense();
-
+    //this.sense();
+    //this.decide();
 
   }
 
@@ -195,11 +202,20 @@ class Creature extends Entity {
     left = senseDir('left', this);
 
 
-    console.log({up: up, right: right, bottom: bottom, left: left});
+    //console.log({up: up, right: right, bottom: bottom, left: left});
     return {up: up, right: right, bottom: bottom, left: left};
   }
 
   decide() {
+    let view = this.sense();
+    for (let key in view) {
+      if (view[key] == 'apples') {
+        console.log('direction: ' + key + ' value: ' + view[key]);
+        this.go(key);
+        return;
+      }
+    }
+    this.go(convertToDirection(getRandomInt(1, 5)));
 
   }
 
@@ -222,12 +238,12 @@ class Creature extends Entity {
 
   }
 
-  go() {
-    let direction = getRandomInt(1, 5);
+  go(direction) {
+    //let direction = getRandomInt(1, 5);
     //console.log(direction);
 
 
-    if (direction == 1 && this.currentCell.y >= this.step && this.currentCell.up.obj == null) { // up
+    if (direction == 'up' && this.currentCell.y >= this.step && this.currentCell.up.obj !== 'creatures') { // up
       this.ctx.fillStyle = 'white';
       this.ctx.fillRect(this.currentCell.x, this.currentCell.y, this.currentCell.size, this.currentCell.size);
       this.currentCell.obj = null;
@@ -239,7 +255,7 @@ class Creature extends Entity {
 
       //console.log('up');
     }
-    if (direction == 2 && this.currentCell.x <= this.cWidth - this.step && this.currentCell.right.obj == null) { // right
+    if (direction == 'right' && this.currentCell.x <= this.cWidth - this.step && this.currentCell.right.obj !== 'creatures') { // right
       this.ctx.fillStyle = 'white';
       this.ctx.fillRect(this.currentCell.x, this.currentCell.y, this.currentCell.size, this.currentCell.size);
       this.currentCell.obj = null;
@@ -251,7 +267,7 @@ class Creature extends Entity {
 
       //console.log('right');
     }
-    if (direction == 3 && this.currentCell.y <= this.cHeight - this.step && this.currentCell.bottom.obj == null) { //bottom
+    if (direction == 'bottom' && this.currentCell.y <= this.cHeight - this.step && this.currentCell.bottom.obj !== 'creatures') { //bottom
       this.ctx.fillStyle = 'white';
       this.ctx.fillRect(this.currentCell.x, this.currentCell.y, this.currentCell.size, this.currentCell.size);
       this.currentCell.obj = null;
@@ -263,7 +279,7 @@ class Creature extends Entity {
 
       //console.log('bottom');
     }
-    if (direction == 4 && this.currentCell.x >= this.step && this.currentCell.left.obj == null) { // left
+    if (direction == 'left' && this.currentCell.x >= this.step && this.currentCell.left.obj !== 'creatures') { // left
       this.ctx.fillStyle = 'white';
       this.ctx.fillRect(this.currentCell.x, this.currentCell.y, this.currentCell.size, this.currentCell.size);
       this.currentCell.obj = null;
@@ -291,6 +307,21 @@ function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)) + min; //Максимум не включается, минимум включается
+}
+
+function convertToDirection(number) {
+  switch(number) {
+    case 1:
+      return 'up';
+    case 2:
+      return 'right';
+    case 3:
+      return 'bottom';
+    case 4:
+      return 'left';
+    default:
+      console.log('что то пошло не так');
+  } 
 }
 
 function draw() {
