@@ -34,7 +34,7 @@ class Main {
         //console.log('a: ' + a + ' b: ' + b + ' cell: ' + ((a - 1) * (this.cWidth / this.step) + b));
         let addressCell = (a - 1) * (this.cWidth / this.step) + b;
         this.cells[addressCell] = {x: x, y: y, size: 18, obj: null};
-        this.arrCells[addressCell] = addressCell;
+        this.arrCells[addressCell - 1] = addressCell;
       }
     }
 
@@ -127,10 +127,13 @@ function one(object, arr) {
 }
 
 function getRandomCell(arr) {
+  console.log(arr);
   let randomCell;
-  randomCell = getRandomInt(1, arr.length);
+  randomCell = getRandomInt(0, arr.length);
+  let value = arr[randomCell];
   arr.splice(randomCell, 1);
-  return randomCell;
+  
+  return value;
 }
 
 class Entity {
