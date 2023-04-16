@@ -13,6 +13,7 @@ class Main {
                     apples: {},
                     };
     this.cells = {};
+    this.arrCells = [];
 
     this.createField();
     this.drawField();
@@ -33,8 +34,10 @@ class Main {
         //console.log('a: ' + a + ' b: ' + b + ' cell: ' + ((a - 1) * (this.cWidth / this.step) + b));
         let addressCell = (a - 1) * (this.cWidth / this.step) + b;
         this.cells[addressCell] = {x: x, y: y, size: 18, obj: null};
+        this.arrCells[addressCell] = addressCell;
       }
     }
+
 
 
     for (let y = 1, a = 1; y <= this.cHeight; y = y + this.step, a++) {
@@ -115,6 +118,21 @@ class Main {
 
 }
 
+function one(object, arr) {
+  for(let key in object) {
+    if (object[key].obj == null) {
+      arr.push = key;
+    }
+  }
+}
+
+function getRandomCell(arr) {
+  let randomCell;
+  randomCell = getRandomInt(1, arr.length);
+  arr.splice(randomCell, 1);
+  return randomCell;
+}
+
 class Entity {
   constructor(x, y, step, cWidth, cHeight, ctx, main) {
     this.step = step;
@@ -128,14 +146,22 @@ class Entity {
   }
 
   create(ctx, color, type) {
-    let randomCell;
+    let randomCell = getRandomCell(this.main.arrCells);
+    console.log(randomCell);
 
-    while (true) {
-      randomCell = getRandomInt(0, this.cWidth / this.step * this.cHeight / this.step);
-      if (this.main.cells[randomCell].obj == null) {
-        break;
-      }
-    }
+    // while (true) {
+    //   randomCell = getRandomInt(0, this.cWidth / this.step * this.cHeight / this.step);
+    //   if (this.main.cells[randomCell].obj == null) {
+    //     break;
+    //   }
+    // }
+
+    // for(let key in this.main.cells) {
+    //   if (this.main.cells[key].obj == null) {
+    //     randomCell = key;
+    //     break;
+    //   }
+    // }
 
     this.currentCell = this.main.cells[randomCell];
     this.currentCell.obj = this;
@@ -402,6 +428,8 @@ function goTo(ctx, currentPos, step, cWidth, cHeight) {
     }
   })
 }
+
+
 
 
 let body = document.querySelector('body');
