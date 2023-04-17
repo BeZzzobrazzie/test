@@ -15,6 +15,9 @@ class Main {
     this.cells = {};
     this.arrCells = [];
 
+    this.timerId;
+    this.timerStatus = false;
+
     this.createField();
     this.drawField();
 
@@ -25,7 +28,7 @@ class Main {
       new Apple(getRandomInt(0, this.cWidth / this.step), getRandomInt(0, this.cHeight / this.step), this.step, this.cWidth, this.cHeight, this.ctx, this);
     };
 
-    this.timer();
+    //this.timer();
   }
 
   createField() {
@@ -100,9 +103,9 @@ class Main {
 
   timer() {
     let thisObj = this;
-    let timerId = setTimeout(function tick() {
-      console.log(thisObj.objects);
-      console.log(thisObj.cells);
+    thisObj.timerId = setTimeout(function tick() {
+      //console.log(thisObj.objects);
+      //console.log(thisObj.cells);
       for (let key in thisObj.objects.creatures) {
 
         //thisObj.objects.creatures[key].go();
@@ -110,8 +113,22 @@ class Main {
         thisObj.objects.creatures[key].decide();
 
       }
-      timerId = setTimeout(tick, 2000);
+      thisObj.timerId = setTimeout(tick, 2000);
     }, 2000, thisObj);
+  }
+
+  startTimer() {
+    if (!this.timerStatus) {
+      this.timerStatus = true;
+      this.timer();
+    }
+  }
+  
+  stopTimer() {
+    if (this.timerStatus) {
+      this.timerStatus = false;
+      clearTimeout(this.timerId);
+    }
   }
 
 
@@ -433,7 +450,60 @@ function goTo(ctx, currentPos, step, cWidth, cHeight) {
 }
 
 
+class ControlPanel {
+  constructor(main) {
+    this.main = main;
+
+    this.btnPreviousStep = document.querySelector('.btn-previous-step');
+    this.btnPlayPause = document.querySelector('.btn-play-pause');
+    this.btnNextStep = document.querySelector('.btn-next-step');
+    this.btnReset = document.querySelector('.btn-reset');
+
+    this.btnPreviousStep.addEventListener('click', this);
+    this.btnPlayPause.addEventListener('click', this);
+    this.btnNextStep.addEventListener('click', this);
+    this.btnReset.addEventListener('click', this);
+
+
+  }
+
+  handleEvent(event) {
+    console.log(event);
+    if (event.target.classList.contains('btn-previous-step')) {
+      console.log(event.target);
+    }
+    else if (event.target.classList.contains('btn-play-pause')) {
+      console.log(event.target);
+      if (!this.main.timerStatus) {
+        this.main.startTimer();
+        console.log('play');
+        console.log(this.main.timerStatus);
+      }
+      else if (this.main.timerStatus) {
+        this.main.stopTimer();
+        console.log('stop');
+        console.log(this.main.timerStatus);
+      }
+    }
+    else if (event.target.classList.contains('btn-next-step')) {
+      console.log(event.target);
+
+    }
+    else if (event.target.classList.contains('btn-reset')) {
+      console.log(event.target);
+
+    }
+  }
+
+
+}
+
 
 
 let body = document.querySelector('body');
-body.onload = new Main();
+body.onload = function() {
+  let main = new Main();
+  let controlPanel = new ControlPanel(main);
+}
+//body.onload = new Main();
+//body.onload = new ControlPanel();
