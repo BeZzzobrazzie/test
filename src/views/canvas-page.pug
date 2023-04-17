@@ -12,10 +12,11 @@ block content
           h1 Hello
           canvas.my-canvas(width="400" height="400") hi
           .control-panel
-            button.btn-previous-step previous step
+            button.btn-previous-step(disabled) previous step
             button.btn-play-pause play/pause
-            button.btn-next-step next step
-            button.btn-reset reset
+            button.btn-next-step(disabled) next step
+            button.btn-reset(disabled) reset
+            input(type="range")
 
 
 

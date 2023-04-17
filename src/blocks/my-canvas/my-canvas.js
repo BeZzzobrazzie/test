@@ -473,16 +473,11 @@ class ControlPanel {
       console.log(event.target);
     }
     else if (event.target.classList.contains('btn-play-pause')) {
-      console.log(event.target);
       if (!this.main.timerStatus) {
         this.main.startTimer();
-        console.log('play');
-        console.log(this.main.timerStatus);
       }
       else if (this.main.timerStatus) {
         this.main.stopTimer();
-        console.log('stop');
-        console.log(this.main.timerStatus);
       }
     }
     else if (event.target.classList.contains('btn-next-step')) {
