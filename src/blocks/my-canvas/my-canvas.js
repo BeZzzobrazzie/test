@@ -27,8 +27,6 @@ class Main {
     for (let i = 0; i < 1; i++) {
       new Apple(getRandomInt(0, this.cWidth / this.step), getRandomInt(0, this.cHeight / this.step), this.step, this.cWidth, this.cHeight, this.ctx, this);
     };
-
-    //this.timer();
   }
 
   createField() {
@@ -101,7 +99,7 @@ class Main {
   }
 
 
-  timer() {
+  timer(delay) {
     let thisObj = this;
     thisObj.timerId = setTimeout(function tick() {
       //console.log(thisObj.objects);
@@ -113,14 +111,14 @@ class Main {
         thisObj.objects.creatures[key].decide();
 
       }
-      thisObj.timerId = setTimeout(tick, 2000);
-    }, 2000, thisObj);
+      thisObj.timerId = setTimeout(tick, delay);
+    }, delay, thisObj);
   }
 
-  startTimer() {
+  startTimer(delay) {
     if (!this.timerStatus) {
       this.timerStatus = true;
-      this.timer();
+      this.timer(delay);
     }
   }
   
@@ -129,6 +127,10 @@ class Main {
       this.timerStatus = false;
       clearTimeout(this.timerId);
     }
+  }
+  nextStep() {
+    this.startTimer(0);
+    setTimeout(() => this.stopTimer(), 0);
   }
 
 
@@ -474,15 +476,15 @@ class ControlPanel {
     }
     else if (event.target.classList.contains('btn-play-pause')) {
       if (!this.main.timerStatus) {
-        this.main.startTimer();
+        this.main.startTimer(2000);
       }
       else if (this.main.timerStatus) {
         this.main.stopTimer();
       }
     }
     else if (event.target.classList.contains('btn-next-step')) {
-      console.log(event.target);
-
+      //console.log(event.target);
+      this.main.nextStep();
     }
     else if (event.target.classList.contains('btn-reset')) {
       console.log(event.target);
