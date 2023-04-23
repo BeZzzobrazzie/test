@@ -17,6 +17,7 @@ class Main {
 
     this.timerId;
     this.timerStatus = false;
+    this.delay = 1000;
 
     this.createField();
     this.drawField();
@@ -27,6 +28,7 @@ class Main {
     for (let i = 0; i < 1; i++) {
       new Apple(getRandomInt(0, this.cWidth / this.step), getRandomInt(0, this.cHeight / this.step), this.step, this.cWidth, this.cHeight, this.ctx, this);
     };
+
   }
 
   createField() {
@@ -137,23 +139,6 @@ class Main {
 
 }
 
-function one(object, arr) {
-  for(let key in object) {
-    if (object[key].obj == null) {
-      arr.push = key;
-    }
-  }
-}
-
-function getRandomCell(arr) {
-  console.log(arr);
-  let randomCell;
-  randomCell = getRandomInt(0, arr.length);
-  let value = arr[randomCell];
-  arr.splice(randomCell, 1);
-  
-  return value;
-}
 
 class Entity {
   constructor(x, y, step, cWidth, cHeight, ctx, main) {
@@ -171,20 +156,6 @@ class Entity {
     let randomCell = getRandomCell(this.main.arrCells);
     console.log(randomCell);
 
-    // while (true) {
-    //   randomCell = getRandomInt(0, this.cWidth / this.step * this.cHeight / this.step);
-    //   if (this.main.cells[randomCell].obj == null) {
-    //     break;
-    //   }
-    // }
-
-    // for(let key in this.main.cells) {
-    //   if (this.main.cells[key].obj == null) {
-    //     randomCell = key;
-    //     break;
-    //   }
-    // }
-
     this.currentCell = this.main.cells[randomCell];
     this.currentCell.obj = this;
 
@@ -195,6 +166,7 @@ class Entity {
     ctx.fillStyle = color;
     ctx.fillRect(this.currentCell.x, this.currentCell.y, this.currentCell.size, this.currentCell.size);
 
+    console.log(this);
   }
 
   die(ctx) {
@@ -255,6 +227,7 @@ class Creature extends Entity {
   }
 
   decide() {
+    console.log(this);
     let view = this.sense();
     for (let key in view) {
       if (view[key] == 'apples') {
@@ -451,6 +424,15 @@ function goTo(ctx, currentPos, step, cWidth, cHeight) {
   })
 }
 
+function getRandomCell(arr) {
+  //console.log(arr);
+  let randomCell;
+  randomCell = getRandomInt(0, arr.length);
+  let value = arr[randomCell];
+  arr.splice(randomCell, 1);
+  
+  return value;
+}
 
 class ControlPanel {
   constructor(main) {
@@ -460,23 +442,23 @@ class ControlPanel {
     this.btnPlayPause = document.querySelector('.btn-play-pause');
     this.btnNextStep = document.querySelector('.btn-next-step');
     this.btnReset = document.querySelector('.btn-reset');
+    this.rangeDelay = document.querySelector('.range-delay');
 
     this.btnPreviousStep.addEventListener('click', this);
     this.btnPlayPause.addEventListener('click', this);
     this.btnNextStep.addEventListener('click', this);
     this.btnReset.addEventListener('click', this);
-
-
+    this.rangeDelay.addEventListener('change', this);
   }
 
   handleEvent(event) {
-    console.log(event);
+    //console.log(event);
     if (event.target.classList.contains('btn-previous-step')) {
       console.log(event.target);
     }
     else if (event.target.classList.contains('btn-play-pause')) {
       if (!this.main.timerStatus) {
-        this.main.startTimer(2000);
+        this.main.startTimer(this.main.delay);
       }
       else if (this.main.timerStatus) {
         this.main.stopTimer();
@@ -488,6 +470,12 @@ class ControlPanel {
     }
     else if (event.target.classList.contains('btn-reset')) {
       console.log(event.target);
+    }
+    else if (event.target.classList.contains('range-delay')) {
+      //console.log(this.rangeDelay.value);
+      this.main.delay = this.rangeDelay.value;
+      this.main.stopTimer();
+      this.main.startTimer(this.main.delay);
 
     }
   }

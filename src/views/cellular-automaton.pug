@@ -1,0 +1,30 @@
+extends ./layout
+
+block styles 
+  link(href=require('../styles/p-cellular-automaton.scss') rel='stylesheet')
+
+
+block content
+  .cellular-automaton
+    .container 
+      .cellular-automaton__wrap
+        .cellular-automaton__content
+          h1 Hello
+
+          .ca 
+            canvas.ca__canvas(width="40" height="40") hi
+            .ca__control-panel
+              button.btn-previous-step(disabled) previous step
+              button.btn-play-pause play/pause
+              button.btn-next-step next step
+              button.btn-reset(disabled) reset
+              br
+              input.range-delay(type="range", min="0", max="2000", step="100")
+
+
+
+
+
+block append scripts
+  script(src=require('../blocks/ca/ca.js'))
+  
