@@ -1,7 +1,7 @@
 import { getRandomCell } from "./ca-func";
 
 export class CAEntity {
-  constructor(x, y, step, cWidth, cHeight, ctx, main) {
+  constructor(step, cWidth, cHeight, ctx, main) {
     this.step = step;
     this.currentCell;
     this.cWidth = cWidth;
@@ -12,18 +12,19 @@ export class CAEntity {
     this.type;
   }
 
-  create(ctx, color, type) {
+  create(color, type) {
     let randomCell = getRandomCell(this.main.arrCells);
 
     this.currentCell = this.main.cells[randomCell];
     this.currentCell.obj = this;
 
     //this.name = getId(this.main.objects[type]);
-    this.main.objects[type][this.name] = this;
+    //this.main.objects[type][this.name] = this;
 
     
-    ctx.fillStyle = color;
-    ctx.fillRect(this.currentCell.x, this.currentCell.y, this.currentCell.size, this.currentCell.size);
+    this.drawEntity(this.ctx, color, this.currentCell);
+    // ctx.fillStyle = color;
+    // ctx.fillRect(this.currentCell.x, this.currentCell.y, this.currentCell.size, this.currentCell.size);
 
     //console.log(this);
   }
@@ -38,7 +39,7 @@ export class CAEntity {
 
   drawEntity(ctx, color, cell) {
     ctx.fillStyle = color;
-    ctx.fillRect(cell.adressCell, this.currentCell.y, this.step - 2, this.step - 2);
+    ctx.fillRect(cell.x, cell.y, this.step - 2, this.step - 2);
   }
 
 }

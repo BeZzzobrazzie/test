@@ -1,4 +1,5 @@
 import { CAField } from "./ca-field";
+import { CAEntity } from "./ca-entity";
 
 export class CARoot {
   constructor(canvasClass) {
@@ -12,7 +13,8 @@ export class CARoot {
     this.arrCells = [];
 
     this.canvasField = new CAField(this.cHeight, this.cWidth, this.ctx, this.step, this.cells, this.arrCells);
-
+    let i = new CAEntity(this.step, this.cWidth, this.cHeight, this.ctx, this);
+    i.create('green');
 
   }
 

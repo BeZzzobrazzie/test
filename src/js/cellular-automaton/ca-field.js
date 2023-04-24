@@ -27,13 +27,14 @@ export class CAField {
     for (let y = 1, a = 1; y <= cHeight; y = y + step, a++) {
       for (let x = 1, b = 1; x <= cWidth; x = x + step, b++) {
         let addressCell = (a - 1) * (cWidth / step) + b;
-        cells[addressCell] = {obj: null, addressCell: addressCell};
+        cells[addressCell] = {obj: null, addressCell: addressCell, x: x, y: y};
         arrCells[addressCell - 1] = addressCell;
 
-        //let cx = (addressCell % (cWidth/step) - 1) *20 + 1;
-        //let cy = (addressCell % (cHeight/step) - 1) *20 + 1;
-
-        //console.log('x: ' + x + ', y: ' + y + ' | cx: ' + cx + ', cy: ' + cy);
+        // a - строка, b - столбец
+        // a = ceil(addressCell / cWidth)
+        // b = addressCell % cWidth
+        // x = (b - 1) * 20 + 1
+        // y = (a - 1) * 20 + 1
       }
     }
 
