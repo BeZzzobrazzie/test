@@ -27,7 +27,7 @@ export class CAField {
     for (let y = 1, a = 1; y <= cHeight; y = y + step, a++) {
       for (let x = 1, b = 1; x <= cWidth; x = x + step, b++) {
         let addressCell = (a - 1) * (cWidth / step) + b;
-        cells[addressCell] = {obj: null, addressCell: addressCell, x: x, y: y};
+        cells[addressCell] = {obj: null, addressCell: addressCell, x: x, y: y, size: step - 2};
         arrCells[addressCell - 1] = addressCell;
 
         // a - строка, b - столбец
@@ -72,8 +72,8 @@ export class CAField {
       }
     }
 
-    console.log("Object cells: ");
-    console.log(cells);
+    // console.log("Object cells: ");
+    // console.log(cells);
   }
 
 }

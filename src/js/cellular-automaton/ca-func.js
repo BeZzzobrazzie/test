@@ -16,3 +16,27 @@ export function getRandomInt(min, max) {
 
   return Math.floor(Math.random() * (max - min)) + min; //Максимум не включается, минимум включается
 }
+
+export function convertIntToDirection(number) {
+  switch(number) {
+    case 1:
+      return 'up';
+    case 2:
+      return 'right';
+    case 3:
+      return 'bottom';
+    case 4:
+      return 'left';
+    default:
+      console.log('что то пошло не так');
+  } 
+}
+
+export function getId(collection) {
+  while (true) {
+    let key = getRandomInt(0, 10000);
+    if (!(key in collection)) {
+      return key;
+    }
+  }
+}

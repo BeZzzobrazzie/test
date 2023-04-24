@@ -1,7 +1,7 @@
-import { getRandomCell } from "./ca-func";
+import { getRandomCell, getId } from "./ca-func";
 
 export class CAEntity {
-  constructor(step, cWidth, cHeight, ctx, main) {
+  constructor(step, cWidth, cHeight, ctx, main, color) {
     this.step = step;
     this.currentCell;
     this.cWidth = cWidth;
@@ -10,32 +10,33 @@ export class CAEntity {
     this.main = main;
     this.name;
     this.type;
+    this.color = color;
   }
 
-  create(color, type) {
+  create(color) {
     let randomCell = getRandomCell(this.main.arrCells);
 
     this.currentCell = this.main.cells[randomCell];
     this.currentCell.obj = this;
 
-    //this.name = getId(this.main.objects[type]);
-    //this.main.objects[type][this.name] = this;
+    this.name = getId(this.main.objects[this.type]);
+    this.main.objects[this.type][this.name] = this;
 
     
     this.drawEntity(this.ctx, color, this.currentCell);
-    // ctx.fillStyle = color;
-    // ctx.fillRect(this.currentCell.x, this.currentCell.y, this.currentCell.size, this.currentCell.size);
-
-    //console.log(this);
+    console.log('создание');
+    console.log(this);
   }
 
-  // die(ctx) {
-  //   if (this.name in this.main.objects[type]) {
-  //     ctx.fillStyle = 'white';
-  //     ctx.fillRect(this.currentPos.x, this.currentPos.y, 18, 18);
-  //     delete this.main.objects[type][this.name];
-  //   }
-  // }
+  die() {
+    if (this.name in this.main.objects[this.type]) {
+      this.ctx.fillStyle = 'white';
+      this.ctx.fillRect(this.currentCell.x, this.currentCell.y, this.step - 2, this.step - 2);
+      this.currentCell.obj = null;
+      this.main.arrCells.push(this.currentCell.addressCell);
+      delete this.main.objects[this.type][this.name];
+    }
+  }
 
   drawEntity(ctx, color, cell) {
     ctx.fillStyle = color;
