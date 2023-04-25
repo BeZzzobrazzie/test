@@ -12,17 +12,25 @@ export class CACreature extends CAEntity {
     //let direction = getRandomInt(1, 5);
     //this.sense();
     //this.decide();
-    console.log('до движения');
-    console.log(this);
+
+    console.log(this.color + ' ' + this.enegry);
+    this.enegry -= 1;
+    if(this.enegry <= 0) {
+      this.die();
+      return;
+    }
     this.decide();
-    console.log('после движения');
-    console.log(this);
+
   }
 
   decide() {
     //console.log(this);
     let view = this.sense();
     for (let key in view) {
+      if (this.enegry >= 50) {
+        this.reproduce();
+        return;
+      }
       if (view[key] == 'apples') {
         //console.log('direction: ' + key + ' value: ' + view[key]);
         this.eat(key);
@@ -61,6 +69,7 @@ export class CACreature extends CAEntity {
 
   eat(direction) {
     if (this.currentCell[direction].obj.type == 'apples') {
+      this.enegry += 10;
       this.currentCell[direction].obj.die();
       this.go(direction);
 
@@ -72,20 +81,30 @@ export class CACreature extends CAEntity {
 
   }
 
+  reproduce() {
+    console.log('reproduce');
+    this.enegry -= 30;
+    
+  }
+
   go(direction) {
 
     if (this.currentCell[direction] !== null && this.currentCell[direction].obj === null) { 
-      console.log(this.currentCell[direction]);
-      console.log(this.currentCell[direction].obj);
 
       this.ctx.fillStyle = 'white';
       this.ctx.fillRect(this.currentCell.x, this.currentCell.y, this.currentCell.size, this.currentCell.size);
       this.currentCell.obj = null;
+      this.main.arrCells.push(this.currentCell.addressCell);
+
 
       this.ctx.fillStyle = this.color;
       this.ctx.fillRect(this.currentCell[direction].x, this.currentCell[direction].y, this.currentCell.size, this.currentCell.size);
       this.currentCell = this.currentCell[direction];
       this.currentCell.obj = this;
+
+      this.main.arrCells.splice(this.main.arrCells.indexOf(this.currentCell.addressCell), 1);
+
+      
     }
   }
 }

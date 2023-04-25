@@ -29,6 +29,7 @@ export class CARoot {
 
     let i = new CACreature(this.step, this.cWidth, this.cHeight, this.ctx, this, 'blue');
     let b = new CACreature(this.step, this.cWidth, this.cHeight, this.ctx, this, 'yellow');
+    let r = new CACreature(this.step, this.cWidth, this.cHeight, this.ctx, this, 'purple');
     let m = new CAApple(this.step, this.cWidth, this.cHeight, this.ctx, this, 'orange');
 
     
@@ -41,6 +42,8 @@ export class CARoot {
       for (let key in thisObj.objects.creatures) {
         thisObj.objects.creatures[key].exist();
       }
+      let m = new CAApple(thisObj.step, thisObj.cWidth, thisObj.cHeight, thisObj.ctx, thisObj, 'orange');
+
       thisObj.timerId = setTimeout(tick, delay);
     }, delay, thisObj);
   }

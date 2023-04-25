@@ -11,6 +11,7 @@ export class CAEntity {
     this.name;
     this.type;
     this.color = color;
+    this.enegry = 10;
   }
 
   create(color) {
@@ -24,8 +25,7 @@ export class CAEntity {
 
     
     this.drawEntity(this.ctx, color, this.currentCell);
-    console.log('создание');
-    console.log(this);
+
   }
 
   die() {
