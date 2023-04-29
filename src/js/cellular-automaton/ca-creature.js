@@ -1,5 +1,5 @@
 import { CAEntity } from "./ca-entity";
-import { convertIntToDirection, getRandomInt } from "./ca-func";
+import { convertIntToDirection, getRandomInt, randColor, mixColor } from "./ca-func";
 
 export class CACreature extends CAEntity {
   constructor(step, cWidth, cHeight, ctx, main, color) {
@@ -26,11 +26,11 @@ export class CACreature extends CAEntity {
   decide() {
     //console.log(this);
     let view = this.sense();
+    if (this.enegry >= 50) {
+      this.reproduce(view);
+      return;
+    }
     for (let key in view) {
-      if (this.enegry >= 50) {
-        this.reproduce();
-        return;
-      }
       if (view[key] == 'apples') {
         //console.log('direction: ' + key + ' value: ' + view[key]);
         this.eat(key);
@@ -81,9 +81,27 @@ export class CACreature extends CAEntity {
 
   }
 
-  reproduce() {
+  reproduce(view) {
     console.log('reproduce');
-    this.enegry -= 30;
+
+    let partner = false;
+    let partnerObj;
+    let freeSpace = false;
+    for (let key in view) {
+      if (view[key] === null) {
+        freeSpace = true;
+      }
+      if (view[key] == 'creatures') {
+        partner = true;
+        partnerObj = this.currentCell[key].obj;
+      }
+    }
+
+    if (freeSpace && partner) {
+      new CACreature(this.step, this.cWidth, this.cHeight, this.ctx, this.main, mixColor(this.color, partnerObj.color));
+      this.enegry -= 30;
+    }
+
     
   }
 

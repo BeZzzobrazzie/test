@@ -2,6 +2,7 @@ import { CAField } from "./ca-field";
 import { CAEntity } from "./ca-entity";
 import { CACreature } from "./ca-creature";
 import { CAApple } from "./ca-apple";
+import { randColor } from "./ca-func";
 
 export class CARoot {
   constructor(canvasClass) {
@@ -23,16 +24,19 @@ export class CARoot {
     //let i = new CAEntity(this.step, this.cWidth, this.cHeight, this.ctx, this);
     //i.create('green');
 
-    // for (let index = 0; index < 2; index++) {
-    //   new CACreature(this.step, this.cWidth, this.cHeight, this.ctx, this, 'yellow');
-    // }
+    for (let index = 0; index < 50; index++) {
+      new CACreature(this.step, this.cWidth, this.cHeight, this.ctx, this, randColor());
+      new CAApple(this.step, this.cWidth, this.cHeight, this.ctx, this, 'orange');
+    }
 
-    let i = new CACreature(this.step, this.cWidth, this.cHeight, this.ctx, this, 'blue');
-    let b = new CACreature(this.step, this.cWidth, this.cHeight, this.ctx, this, 'yellow');
-    let r = new CACreature(this.step, this.cWidth, this.cHeight, this.ctx, this, 'purple');
-    let m = new CAApple(this.step, this.cWidth, this.cHeight, this.ctx, this, 'orange');
+    // let i = new CACreature(this.step, this.cWidth, this.cHeight, this.ctx, this, '#0000ff');
+    // let b = new CACreature(this.step, this.cWidth, this.cHeight, this.ctx, this, '#ffff00');
+    // let r = new CACreature(this.step, this.cWidth, this.cHeight, this.ctx, this, '#800080');
 
-    
+    //let m = new CAApple(this.step, this.cWidth, this.cHeight, this.ctx, this, 'orange');
+
+
+
 
   }
 
@@ -42,7 +46,9 @@ export class CARoot {
       for (let key in thisObj.objects.creatures) {
         thisObj.objects.creatures[key].exist();
       }
-      let m = new CAApple(thisObj.step, thisObj.cWidth, thisObj.cHeight, thisObj.ctx, thisObj, 'orange');
+      for (let index = 0; index < 15; index++) {
+        new CAApple(thisObj.step, thisObj.cWidth, thisObj.cHeight, thisObj.ctx, thisObj, 'orange');
+      }
 
       thisObj.timerId = setTimeout(tick, delay);
     }, delay, thisObj);

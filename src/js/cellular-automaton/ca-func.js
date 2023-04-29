@@ -40,3 +40,36 @@ export function getId(collection) {
     }
   }
 }
+
+export function randColor() {
+  let r = getRandomInt(0, 256);
+  let g = getRandomInt(0, 256);
+  let b = getRandomInt(0, 256);
+  let color = '#' + r.toString(16) + g.toString(16) + b.toString(16);
+
+  return color;
+}
+
+export function mixColor(colorOne, colorTwo) {
+  let rOne = parseInt(colorOne.slice(1, 3), 16);
+  let gOne = parseInt(colorOne.slice(3, 5), 16);
+  let bOne = parseInt(colorOne.slice(5), 16);
+
+  let rTwo = parseInt(colorTwo.slice(1, 3), 16);
+  let gTwo = parseInt(colorTwo.slice(3, 5), 16);
+  let bTwo = parseInt(colorTwo.slice(5), 16);
+
+
+  let result = rgb2hex(Math.round((rOne + rTwo) / 2), Math.round((gOne + gTwo) / 2), Math.round((bOne + bTwo) / 2));
+
+  return result;
+}
+
+function componentToHex(c) {
+  var hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
+}
+
+function rgb2hex(r, g, b) {
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
