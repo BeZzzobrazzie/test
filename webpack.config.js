@@ -8,6 +8,7 @@ module.exports = {
     "j-query": "./src/views/j-query.pug",
     "canvas-page": "./src/views/canvas-page.pug",
     "cellular-automaton": "./src/views/cellular-automaton.pug",
+    "experiment-with-color": "./src/views/experiment-with-color.pug",
 
   },
   stats: {
