@@ -11,13 +11,20 @@ export class CAEntity {
     this.name;
     this.type;
     this.color = color;
-    this.enegry = 10;
+    this.enegry = 1000;
   }
 
-  create(color) {
-    let randomCell = getRandomCell(this.main.arrCells);
+  create(color, cell = -1) {
+    let targetCell;
+    if (cell == -1) {
+      targetCell = getRandomCell(this.main.listFreeCells);
+    }
+    else {
+      targetCell = cell;
+    }
+    
 
-    this.currentCell = this.main.cells[randomCell];
+    this.currentCell = this.main.cells[targetCell];
     this.currentCell.obj = this;
 
     this.name = getId(this.main.objects[this.type]);
@@ -33,7 +40,8 @@ export class CAEntity {
       this.ctx.fillStyle = 'white';
       this.ctx.fillRect(this.currentCell.x, this.currentCell.y, this.step - 2, this.step - 2);
       this.currentCell.obj = null;
-      this.main.arrCells.push(this.currentCell.addressCell);
+      //this.main.arrCells.push(this.currentCell.addressCell);
+      this.main.listFreeCells[this.currentCell.addressCell] = 1;
       delete this.main.objects[this.type][this.name];
     }
   }

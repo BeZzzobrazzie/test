@@ -1,5 +1,4 @@
 import { CAField } from "./ca-field";
-import { CAEntity } from "./ca-entity";
 import { CACreature } from "./ca-creature";
 import { CAApple } from "./ca-apple";
 import { randColor } from "./ca-func";
@@ -14,17 +13,19 @@ export class CARoot {
 
     this.cells = {};
     this.arrCells = [];
+    this.listFreeCells = {};
     this.objects = {creatures: {}, apples: {},};
 
     this.timerId;
     this.timerStatus = false;
     this.delay = 1000;
 
-    this.canvasField = new CAField(this.cHeight, this.cWidth, this.ctx, this.step, this.cells, this.arrCells);
+    this.canvasField = new CAField(this.cHeight, this.cWidth, this.ctx, this.step, this.cells, this.arrCells, this.listFreeCells);
     //let i = new CAEntity(this.step, this.cWidth, this.cHeight, this.ctx, this);
     //i.create('green');
+    console.log(this.listFreeCells);
 
-    for (let index = 0; index < 50; index++) {
+    for (let index = 0; index < 1; index++) {
       new CACreature(this.step, this.cWidth, this.cHeight, this.ctx, this, randColor());
       new CAApple(this.step, this.cWidth, this.cHeight, this.ctx, this, 'orange');
     }
@@ -46,9 +47,12 @@ export class CARoot {
       for (let key in thisObj.objects.creatures) {
         thisObj.objects.creatures[key].exist();
       }
-      for (let index = 0; index < 15; index++) {
+      for (let index = 0; index < 1; index++) {
         new CAApple(thisObj.step, thisObj.cWidth, thisObj.cHeight, thisObj.ctx, thisObj, 'orange');
       }
+      console.log(thisObj.listFreeCells);
+      console.log(thisObj.objects);
+      console.log(thisObj.cells);
 
       thisObj.timerId = setTimeout(tick, delay);
     }, delay, thisObj);

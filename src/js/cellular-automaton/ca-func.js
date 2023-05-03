@@ -1,12 +1,17 @@
 
 
 
-export function getRandomCell(arr) {
-  let randomCell = getRandomInt(0, arr.length);
-  let value = arr[randomCell];
-  arr.splice(randomCell, 1);
+export function getRandomCell(list) {
+  // let randomCell = getRandomInt(0, arr.length);
+  // let value = arr[randomCell];
+  // arr.splice(randomCell, 1);
+
+  // return value;
+
+  let randomCell = getRandomInt(1, Object.keys(list).length + 1); // !ошибка здесь, мы выбираем случайное число от 1 до длины списка (к примеру 9), но третий элемент ведь уже может быть занят. Нужно, что бы выбирался случайный элемент из списка или в самом списке хранились адреса ячеек. 
+  delete list[randomCell];
   
-  return value;
+  return randomCell;
 }
 
 

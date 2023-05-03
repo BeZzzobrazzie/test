@@ -26,10 +26,10 @@ export class CACreature extends CAEntity {
   decide() {
     //console.log(this);
     let view = this.sense();
-    if (this.enegry >= 50) {
-      this.reproduce(view);
-      return;
-    }
+    // if (this.enegry >= 50) {
+    //   this.reproduce(view);
+    //   return;
+    // }
     for (let key in view) {
       if (view[key] == 'apples') {
         //console.log('direction: ' + key + ' value: ' + view[key]);
@@ -112,16 +112,16 @@ export class CACreature extends CAEntity {
       this.ctx.fillStyle = 'white';
       this.ctx.fillRect(this.currentCell.x, this.currentCell.y, this.currentCell.size, this.currentCell.size);
       this.currentCell.obj = null;
-      this.main.arrCells.push(this.currentCell.addressCell);
-
+      //this.main.arrCells.push(this.currentCell.addressCell);
+      this.main.listFreeCells[this.currentCell.addressCell] = 1;
 
       this.ctx.fillStyle = this.color;
       this.ctx.fillRect(this.currentCell[direction].x, this.currentCell[direction].y, this.currentCell.size, this.currentCell.size);
       this.currentCell = this.currentCell[direction];
       this.currentCell.obj = this;
 
-      this.main.arrCells.splice(this.main.arrCells.indexOf(this.currentCell.addressCell), 1);
-
+      //this.main.arrCells.splice(this.main.arrCells.indexOf(this.currentCell.addressCell), 1);
+      delete this.main.listFreeCells[this.currentCell.addressCell];
       
     }
   }
