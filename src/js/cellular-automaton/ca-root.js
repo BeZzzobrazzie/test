@@ -25,7 +25,7 @@ export class CARoot {
     //i.create('green');
     console.log(this.listFreeCells);
 
-    for (let index = 0; index < 1; index++) {
+    for (let index = 0; index < 10; index++) {
       new CACreature(this.step, this.cWidth, this.cHeight, this.ctx, this, randColor());
       new CAApple(this.step, this.cWidth, this.cHeight, this.ctx, this, 'orange');
     }
@@ -47,7 +47,7 @@ export class CARoot {
       for (let key in thisObj.objects.creatures) {
         thisObj.objects.creatures[key].exist();
       }
-      for (let index = 0; index < 1; index++) {
+      for (let index = 0; index < 2; index++) {
         new CAApple(thisObj.step, thisObj.cWidth, thisObj.cHeight, thisObj.ctx, thisObj, 'orange');
       }
       console.log(thisObj.listFreeCells);

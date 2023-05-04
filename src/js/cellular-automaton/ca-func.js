@@ -8,10 +8,11 @@ export function getRandomCell(list) {
 
   // return value;
 
-  let randomCell = getRandomInt(1, Object.keys(list).length + 1); // !ошибка здесь, мы выбираем случайное число от 1 до длины списка (к примеру 9), но третий элемент ведь уже может быть занят. Нужно, что бы выбирался случайный элемент из списка или в самом списке хранились адреса ячеек. 
-  delete list[randomCell];
+  let randomCell = getRandomInt(0, Object.keys(list).length); 
+  let value = Object.keys(list)[randomCell];
+  delete list[Object.keys(list)[randomCell]];
   
-  return randomCell;
+  return value;
 }
 
 
