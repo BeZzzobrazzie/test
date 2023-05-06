@@ -1,8 +1,8 @@
 
 
 export class CAField {
-  constructor(cHeight, cWidth, ctx, step, cells, arrCells, listFreeCells) {
-    this.createLogicField(cHeight, cWidth, step, cells, arrCells, listFreeCells);
+  constructor(cHeight, cWidth, ctx, step, cells, listFreeCells) {
+    this.createLogicField(cHeight, cWidth, step, cells, listFreeCells);
     this.drawField(cHeight, cWidth, ctx, step);
   }
 
@@ -23,12 +23,11 @@ export class CAField {
     }  
   }
 
-  createLogicField(cHeight, cWidth, step, cells, arrCells, listFreeCells) {
+  createLogicField(cHeight, cWidth, step, cells, listFreeCells) {
     for (let y = 1, a = 1; y <= cHeight; y = y + step, a++) {
       for (let x = 1, b = 1; x <= cWidth; x = x + step, b++) {
         let addressCell = (a - 1) * (cWidth / step) + b;
         cells[addressCell] = {obj: null, addressCell: addressCell, x: x, y: y, size: step - 2};
-        arrCells[addressCell - 1] = addressCell;
         listFreeCells[addressCell] = 1;
 
 

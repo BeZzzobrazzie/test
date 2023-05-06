@@ -12,7 +12,6 @@ export class CARoot {
     this.step = 20;
 
     this.cells = {};
-    this.arrCells = [];
     this.listFreeCells = {};
     this.objects = {creatures: {}, apples: {},};
 
@@ -20,7 +19,7 @@ export class CARoot {
     this.timerStatus = false;
     this.delay = 1000;
 
-    this.canvasField = new CAField(this.cHeight, this.cWidth, this.ctx, this.step, this.cells, this.arrCells, this.listFreeCells);
+    this.canvasField = new CAField(this.cHeight, this.cWidth, this.ctx, this.step, this.cells, this.listFreeCells);
     //let i = new CAEntity(this.step, this.cWidth, this.cHeight, this.ctx, this);
     //i.create('green');
     console.log(this.listFreeCells);
@@ -50,9 +49,6 @@ export class CARoot {
       for (let index = 0; index < 2; index++) {
         new CAApple(thisObj.step, thisObj.cWidth, thisObj.cHeight, thisObj.ctx, thisObj, 'orange');
       }
-      console.log(thisObj.listFreeCells);
-      console.log(thisObj.objects);
-      console.log(thisObj.cells);
 
       thisObj.timerId = setTimeout(tick, delay);
     }, delay, thisObj);

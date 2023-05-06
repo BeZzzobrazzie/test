@@ -2,12 +2,6 @@
 
 
 export function getRandomCell(list) {
-  // let randomCell = getRandomInt(0, arr.length);
-  // let value = arr[randomCell];
-  // arr.splice(randomCell, 1);
-
-  // return value;
-
   let randomCell = getRandomInt(0, Object.keys(list).length); 
   let value = Object.keys(list)[randomCell];
   delete list[Object.keys(list)[randomCell]];

@@ -11,7 +11,7 @@ export class CAEntity {
     this.name;
     this.type;
     this.color = color;
-    this.enegry = 1000;
+    this.enegry = 30;
   }
 
   create(color, cell = -1) {
@@ -40,7 +40,6 @@ export class CAEntity {
       this.ctx.fillStyle = 'white';
       this.ctx.fillRect(this.currentCell.x, this.currentCell.y, this.step - 2, this.step - 2);
       this.currentCell.obj = null;
-      //this.main.arrCells.push(this.currentCell.addressCell);
       this.main.listFreeCells[this.currentCell.addressCell] = 1;
       delete this.main.objects[this.type][this.name];
     }
