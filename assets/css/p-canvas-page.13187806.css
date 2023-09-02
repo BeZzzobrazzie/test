@@ -343,23 +343,6 @@ p {
   margin: 0;
 }
 
-.colors-and-fonts__wrap {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-.colors-and-fonts__palette {
-  margin-top: 145px;
-  margin-left: auto;
-  margin-right: auto;
-}
-.colors-and-fonts__font-set {
-  margin-top: 145px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 145px;
-}
-
 .container {
   min-width: 320px;
   margin-left: auto;
@@ -378,107 +361,6 @@ p {
   }
 }
 
-.palette {
-  display: flex;
-  flex-direction: column;
-  gap: 20px 0;
-}
-
-.color-card {
-  display: flex;
-}
-.color-card__color {
-  height: 70px;
-  width: 70px;
-  border-radius: 6px;
-  margin-right: 40px;
-}
-.color-card__color_color-hex_1F2041BF {
-  background-color: rgba(31, 32, 65, 0.7490196078);
-}
-.color-card__color_color-hex_1F2041FF {
-  background-color: #1f2041;
-}
-.color-card__color_color-hex_1F20410D {
-  background-color: rgba(31, 32, 65, 0.0509803922);
-}
-.color-card__color_color-hex_1F204140 {
-  background-color: rgba(31, 32, 65, 0.2509803922);
-}
-.color-card__color_color-hex_1F204180 {
-  background-color: rgba(31, 32, 65, 0.5019607843);
-}
-.color-card__color_color-hex_6FCF97 {
-  background-color: #6FCF97;
-}
-.color-card__color_color-hex_BC9CFF {
-  background-color: #BC9CFF;
-}
-.color-card__title {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.color-card__name {
-  margin-bottom: 10px;
-}
-.color-card__hex {
-  margin: 0;
-  color: #1F2041;
-  font-family: Montserrat-Regular;
-  font-size: 19px;
-}
-
-.h2 {
-  font-family: "Montserrat-Bold";
-  font-size: 19px;
-  color: #1F2041;
-  margin: 0;
-}
-
-.font-set {
-  max-width: 435px;
-  min-width: 320px;
-  display: grid;
-  grid-template-columns: 40px auto;
-  gap: 51px 20px;
-}
-.font-set__icon {
-  font-family: "Montserrat-Regular";
-  color: rgba(31, 32, 65, 0.2509803922);
-  justify-self: end;
-}
-.font-set__icon_size_12 {
-  font-size: 12px;
-}
-.font-set__icon_size_14 {
-  font-size: 14px;
-}
-.font-set__icon_size_19 {
-  font-size: 19px;
-}
-.font-set__icon_size_24 {
-  font-size: 24px;
-}
-
-.h1 {
-  font-family: "Montserrat-Bold";
-  font-size: 24px;
-  color: #1F2041;
-  margin: 0;
-}
-
-.h3 {
-  font-family: "Montserrat-Bold";
-  color: #1F2041;
-  text-transform: uppercase;
-  font-size: 12px;
-  margin: 0;
-}
-
-.body-text {
-  font-family: "Montserrat-Regular";
-  font-size: 14px;
-  color: rgba(31, 32, 65, 0.7490196078);
-  margin: 0;
+.my-canvas {
+  border: 1px solid black;
 }
